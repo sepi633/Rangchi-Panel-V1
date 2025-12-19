@@ -1,0 +1,249 @@
+<template>
+  <div class=" p-6 sm:p-10 space-y-6">
+    <UCard>
+      <template #header>
+        <div class="flex justify-between">
+          <p>
+            نمایندگی ها </p>
+          <div class="flex justify-end">
+            <UButton icon="i-heroicons-plus-small" size="sm" color="primary" square variant="solid"
+              @click="newAgency" />
+          </div>
+        </div>
+      </template>
+
+      <UTable :rows="filter?.list" :columns="columns">
+        <template #actions-data="{ row }">
+          <UDropdown :items="Actions(row)">
+            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+          </UDropdown>
+        </template>
+        <template #active-data="{ row }">
+          <UIcon :class="[row.active ? 'text-green-400' : 'text-red-400', 'w-8 h-8']" size="lg"
+            :name="row.active ? 'i-heroicons-check-16-solid' : 'i-heroicons-x-mark-16-solid'" />
+
+        </template>
+        <template #adminConfirm-data="{ row }">
+          <UIcon :class="[row.adminConfirm ? 'text-green-400' : 'text-red-400', 'w-8 h-8']" size="lg"
+            :name="row.adminConfirm ? 'i-heroicons-check-16-solid' : 'i-heroicons-x-mark-16-solid'" />
+
+        </template>
+
+      </UTable>
+
+
+      <template #footer>
+        <div class="flex flex-wrap justify-between items-center">
+          <div>
+            <span class="text-sm leading-5">
+              ردیف
+              <span class="mx-2 font-bold">{{ pageFrom }}</span>
+              تا
+              <span class="mx-2 font-bold">{{ pageTo }}</span>
+              از
+              <span class="mx-2 font-bold">{{ filter.totalCount }}</span>
+              مورد
+            </span>
+          </div>
+
+          <UPagination v-model="filter.pageIndex" :page-count="filter.pageSize" :total="filter.totalCount" :ui="{
+            wrapper: 'flex items-center flex-row-reverse gap-1',
+            rounded: '!rounded-full min-w-[32px] justify-center',
+            default: {
+              activeButton: {
+                variant: 'outline'
+              }
+            }
+          }" />
+        </div>
+      </template>
+    </UCard>
+    <FormAgency :is-new="isNew" :form-data="selected" v-model="openFormModal" @reload="loadData" />
+    <FormDelete :route="'/api/agency/agency'" formTitle="نقش" @reload="loadData" :selectedId="selected.id"
+      v-model="openDeleteModal" />
+    <FormSetActive :route="'/api/agency/confirm'" formTitle="تایید نمایندگی" @reload="loadData" :selected="selected"
+:showAdminConfirm="true"      v-model="openConfirmModal" />
+    <FormAgencyCategory :agencyId="selected.id" v-model="openCategoryModal" />
+    <FormAgencyAssistance :agencyId="selected.id" v-model="openAssistanceModal" />
+    <FormAgencyDays :agencyId="selected.id" v-model="openDayModal" />
+  </div>
+</template>
+
+<script setup>
+
+const isNew = ref(true)
+const selected = ref({})
+const openFormModal = ref(false)
+const openDeleteModal = ref(false)
+const openCategoryModal = ref(false)
+const openAssistanceModal = ref(false)
+const openConfirmModal=ref(false)
+const openDayModal=ref(false)
+const toast = useToast()
+
+const columns = [
+  {
+    key: 'user.fullName',
+    label: 'کاربر'
+  },
+  {
+    key: 'name',
+    label: 'نام'
+  },
+  {
+    key: 'ownerFirstName',
+    label: ' نام مدیر'
+  },
+  {
+    key: 'ownerLastName',
+    label: 'نام خانوادگی مدیر'
+  },
+  {
+  key: 'city.state.name',
+  label: 'استان'
+  }, 
+    {
+  key: 'city.name',
+  label: 'شهر'
+  }, 
+    {
+  key: 'neighborhood.name',
+  label: 'محله'
+  }, 
+  {
+    key: 'adminConfirm',
+    label: 'تایید'
+  },
+  {
+    key: 'active',
+    label: 'فعال/غیر فعال'
+  },
+  {
+    key: 'admin.fullName',
+    label: 'تایید کننده'
+  },
+  {
+    key: 'actions',
+  }]
+const filter = ref({
+  totalCount: 0,
+  pageIndex: 1,
+  pageSize: 15,
+})
+const pageFrom = computed(() => {
+  return (filter.value.pageIndex - 1) * filter.value.pageSize + 1
+})
+const pageTo = computed(() => {
+  return filter.value.pageIndex * filter.value.pageSize + 1
+})
+const rows = ref([])
+const Actions = (row) => [
+  [{
+    label: 'ویرایش',
+    icon: 'i-heroicons-pencil-square-20-solid',
+    click: () => editAgency(row)
+  }],
+  [{
+    label: 'حذف',
+    icon: 'i-heroicons-trash-20-solid',
+    click: () => {selected.value=row;openDeleteModal.value=true}
+  }],
+  [{
+    label: 'خودروها',
+    icon: 'i-heroicons-truck',
+    click: () => {
+      openCategoryModal.value = true
+      selected.value = row
+    }
+  }],
+  [{
+    label: 'خدمات',
+    icon: 'i-heroicons-wrench-screwdriver-16-solid',
+    click: () => {
+      openAssistanceModal.value = true;
+      selected.value = row
+    }
+  }],
+  [{
+    label: 'روز ها و نوبت ها',
+    icon: 'i-heroicons-clock',
+    click: () => {
+      openDayModal.value = true;
+      selected.value = row
+
+    }
+  }],
+  [{
+    label: 'عکس ها ',
+    icon: 'i-heroicons-photo',
+    click:()=>navigateTo('/agency/pictures'+row.id)
+  }], 
+  [{
+    label: ' تایید کردن ',
+    icon: 'i-heroicons-bolt',
+    click:()=>{
+      openConfirmModal.value = true
+      selected.value = row
+    }
+  }], 
+  [{
+    label: ' گزارشات',
+    icon: 'i-heroicons-clipboard-document-list',
+    click:()=>{
+      navigateTo(`/agency/viewreport-${row.id}-${row.name}
+      `)
+    }
+  }], 
+
+]
+// function select (row) {
+//     selected.value=(row)
+// }
+function newAgency() {
+  openFormModal.value = true
+  isNew.value = true
+  selected.value = {}
+}
+function editAgency(_item) {
+  openFormModal.value = true
+  isNew.value = false
+  selected.value = { ..._item }
+}
+
+function deleteAgency(_item) {
+  openDeleteModal.value = true
+  selected.value = _item
+}
+
+
+
+watch([() => filter.value.pageIndex], async () => {
+  await loadData()
+})
+
+async function loadData() {
+  try {
+    let config = JSON.parse(JSON.stringify(filter.value))
+    delete config.list
+    console.log(config);
+    let res = await $fetch('/api/agency/agencys', {
+      method: 'GET',
+      query: config
+    })
+    filter.value = res
+  } catch (error) {
+    console.log(error);
+
+    if (error?.response?._data?.message)
+      toast.add({ description: error?.response?._data?.message, title: 'خطا !', color: 'red' });
+    else
+      toast.add({ description: 'مشکلی پیش آمده است .', title: 'خطا !', color: 'red' })
+  }
+}
+
+onMounted(() => {
+  loadData()
+})
+
+
+</script>
