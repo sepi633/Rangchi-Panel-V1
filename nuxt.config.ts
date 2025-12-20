@@ -31,10 +31,10 @@ export default defineNuxtConfig({
     apiSecret:"zzzzz",
     public:{
       // baseUrl:"https://api-clinic.bhpsolution.com",
-      baseUrl:"https://api.arioexir.com", 
-      imageUploaderUrl:"https://file.arioexir.com/api/PictureUpload",
-      showImageBaseUrl:"https://file.arioexir.com",
-      fileUploaderUrl:"https://file.arioexir.com/api/FileUpload",
+      baseUrl:"https://rangchi-api.bhptest.ir", 
+      imageUploaderUrl:"https://rangchi-file.bhptest.ir/api/PictureUpload",
+      showImageBaseUrl:"https://rangchi-file.bhptest.ir",
+      fileUploaderUrl:"https://rangchi-file.bhptest.ir/api/FileUpload",
       responseCode:{
         none:0,
         signUp: 1,
