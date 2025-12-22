@@ -44,13 +44,13 @@ export default defineNuxtConfig({
         verifyCodeCountError:5
   
       },
-      productcategoryId:3,
-      bannercategoryId:1,
-      postCategoryId:2,
-      galleryCategoryId:10054,
+      productcategoryId:10185,
+      bannercategoryId:10184,
+      postCategoryId:10183,
+      galleryCategoryId:10,
       detailCategoryId:4,
       AdvertisementCategoryId:6,
-      projectName:"آریو اکسیر"
+      projectName:"رنگچی"
 
     }
   },
