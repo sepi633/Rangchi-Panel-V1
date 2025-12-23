@@ -26,6 +26,18 @@
             v-model="defaultData.phone"
           />
         </div>
+
+        <div class="input-box flex flex-col p-1">
+          <label for=""> {{ $t("mobile") }}:</label>
+          <input
+            class="border w-full h-[40px] mt-2"
+            type="text"
+            name=""
+            id=""
+            v-model="defaultData.mobile"
+          />
+        </div>
+
         <div class="input-box flex flex-col p-1">
           <label for=""> {{ $t("email") }}:</label>
           <input
