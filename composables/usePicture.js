@@ -6,7 +6,7 @@ export default function (){
     function getPicUrl(_picture,_size){
         if(_picture){
             if(_size)
-            return showImageBaseUrl + _picture?.baseUrl + '/'+_picture.guidName +'-'+_size +_picture.extension
+            return showImageBaseUrl + _picture?.baseUrl + '/'+_picture.guidName  +_picture.extension
         else
         return showImageBaseUrl + _picture?.baseUrl + '/'+_picture.guidName +_picture.extension
         }

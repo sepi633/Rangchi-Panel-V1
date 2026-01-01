@@ -33,7 +33,7 @@
           >
             <strong>{{ index + 1 }}.</strong>
             <span
-              >{{ item.name }} <sub>({{ item?.label }})</sub></span
+              >{{ item.name }} <sub>({{ item?.label }}) ({{ item?.id }})</sub></span
             >
 
             <div
@@ -386,7 +386,7 @@
     <strong v-else class="title flex w-full">{{ $t("confirm") }}</strong>
     <div class="p-2 border rounded-md bg-gray-200 flex gap-2" @click="showFormSec=false">بازگشت<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m13 8l-7 6l7 7"/><path d="M6 14h22.994c6.883 0 12.728 5.62 12.996 12.5c.284 7.27-5.723 13.5-12.996 13.5H11.998"/></g></svg> </div>
   </div>
-    <div class="bg-[#fff] mt-4 p-4 w-full flex flex-wrap insert-box border">
+    <div class="bg-[#fff] mt-4 p-4 w-full flex flex-wrap insert-box border justify-start items-center">
       <!-- <div class="input-box flex flex-col lg:w-1/6 p-1">
                 <label for="">شناسه پدر:</label>
                 <input class="border w-full h-[40px] mt-2" type="text" name="" readonly v-model="newCategory.parentId" id="">

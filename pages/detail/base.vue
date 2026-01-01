@@ -34,7 +34,7 @@
             type="text"
             name=""
             id=""
-            v-model="defaultData.mobile"
+            v-model="defaultData.mobile "
           />
         </div>
 
