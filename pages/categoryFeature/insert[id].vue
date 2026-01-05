@@ -33,7 +33,7 @@
                                  <p>  {{ $t('Addfeaturetocategory') }}</p>
                                 <nuxt-link class="bg-[#1f2937] text-[#eee] rounded p-1" to="/Feature/insertnew">{{ $t('addFeature') }}</nuxt-link>
                             </div>
-                            <ul class="flex flex-wrap mt-5">
+                            <ul class="flex flex-wrap mt-5 max-h-[300px] overflow-auto">
                                 <li v-for="item in featureList" @click="(e)=>{pushFeature(item);e.target.classList.toggle('bg-green-400')}"  :class="[' relative cursor-pointer border w-max p-1 min-w-[100px] flex justify-center m-1 rounded',currentfeature.includes(item.id)?'bg-green-400':'' ]" >
                                    <!-- <div :id='`icon-${item?.id}`' class=" flex top-[-20px] left-[-2px] absolute items-center rounded-[50%]  justify-center bg-[#1f2937] w-[30px] h-[30px]"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" class="bi bi-check-lg" viewBox="0 0 16 16">
   <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
@@ -97,6 +97,7 @@ const defaultData = ref({
     CategoryLabel: "",
     Q: null,
     PageIndex: 1,
+    PageSize: 50,
     SortBy: 0,
     Available: true
 })
