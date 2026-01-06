@@ -13,7 +13,7 @@
             </NuxtLink>
         </div>
         <div class="lg:w-3/12 w-1/2 p-1 " v-for="item in allData?.data" :key="item?.id" :title="item?.name">
-            <div class="bg-white rounded p-2 border flex flex-col h-full justify-between items-center min-h-[100px] item-box">
+            <div class="bg-white rounded p-2 border flex flex-col h-full justify-between items-center min-h-[100px] item-box max-h-[500px] overflow-auto">
                 <strong class="text-[18px]"> {{$t('CategoryName')}} : {{ item?.name }}</strong>
                 <br>
                 <ul class="list-disc w-full list-inside h-100" v-if="item?.features.length > 0">
